@@ -7,7 +7,7 @@ import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { ScanActivityChart } from '@/components/dashboard/ScanActivityChart';
 import { ProjectSelector } from '@/components/dashboard/ProjectSelector';
 import { MultiProjectComparison } from '@/components/dashboard/MultiProjectComparison';
-import { QuickActions } from '@/components/dashboard/QuickActions';
+import { QRTypeSelector } from '@/components/qr/QRTypeSelector';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 
 const Dashboard = () => {
@@ -19,12 +19,7 @@ const Dashboard = () => {
           <SidebarInset>
             <DashboardTopbar />
             <main className="flex-1 p-6 space-y-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-                <p className="text-gray-600">Welcome back! Here's what's happening with your QR campaigns.</p>
-              </div>
-              
-              <QuickActions />
+              <QRTypeSelector />
               <ProjectSelector />
               <DashboardStats />
               
