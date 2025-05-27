@@ -8,6 +8,7 @@ import { ScanActivityChart } from '@/components/dashboard/ScanActivityChart';
 import { ProjectSelector } from '@/components/dashboard/ProjectSelector';
 import { MultiProjectComparison } from '@/components/dashboard/MultiProjectComparison';
 import { QRTypeSelector } from '@/components/qr/QRTypeSelector';
+import { AdvancedQRGenerator } from '@/components/qr/AdvancedQRGenerator';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 
 const Dashboard = () => {
@@ -20,6 +21,16 @@ const Dashboard = () => {
             <DashboardTopbar />
             <main className="flex-1 p-6 space-y-6">
               <QRTypeSelector />
+              
+              {/* QR Code Generator Section */}
+              <div className="bg-white rounded-lg border p-6">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">Create Your QR Code</h2>
+                  <p className="text-gray-600">Configure and preview your QR code before downloading</p>
+                </div>
+                <AdvancedQRGenerator />
+              </div>
+              
               <ProjectSelector />
               <DashboardStats />
               
