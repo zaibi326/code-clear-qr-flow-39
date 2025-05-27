@@ -5,13 +5,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { Settings } from 'lucide-react';
 import { QRCodeConfig } from '@/hooks/useQRGenerator';
+
+interface SelectedType {
+  id: string;
+  title: string;
+  description: string;
+  qrType: 'url' | 'text' | 'email' | 'phone' | 'wifi' | 'vcard' | 'pdf' | 'location';
+  placeholder: string;
+  prefix?: string;
+}
 
 interface QRConfigurationPanelProps {
   config: QRCodeConfig;
   onConfigChange: (config: QRCodeConfig) => void;
   onContentChange: (value: string) => void;
+  selectedType?: SelectedType;
 }
 
 const qrTypes = [
@@ -20,7 +31,8 @@ const qrTypes = [
   { value: 'email', label: 'Email Address', icon: '📧' },
   { value: 'phone', label: 'Phone Number', icon: '📞' },
   { value: 'wifi', label: 'WiFi Network', icon: '📶' },
-  { value: 'vcard', label: 'Contact Card', icon: '👤' }
+  { value: 'vcard', label: 'Contact Card', icon: '👤' },
+  { value: 'location', label: 'Location', icon: '📍' }
 ];
 
 const errorLevels = [
@@ -30,9 +42,72 @@ const errorLevels = [
   { value: 'H', label: 'High (~30%)', description: 'Maximum durability' }
 ];
 
-export function QRConfigurationPanel({ config, onConfigChange, onContentChange }: QRConfigurationPanelProps) {
+export function QRConfigurationPanel({ config, onConfigChange, onContentChange, selectedType }: QRConfigurationPanelProps) {
   const setConfig = (updater: (prev: QRCodeConfig) => QRCodeConfig) => {
     onConfigChange(updater(config));
+  };
+
+  const getContentLabel = () => {
+    if (!selectedType) return 'Content';
+    
+    switch (selectedType.id) {
+      case 'url':
+      case 'multi-link':
+      case 'pdf':
+        return 'Website URL';
+      case 'location':
+        return 'Location (Address or Coordinates)';
+      case 'email':
+        return 'Email Address';
+      case 'call':
+      case 'sms':
+        return 'Phone Number';
+      default:
+        return 'Content';
+    }
+  };
+
+  const getContentPlaceholder = () => {
+    if (!selectedType) return 'Enter your content here...';
+    return selectedType.placeholder;
+  };
+
+  const getHelpText = () => {
+    if (!selectedType) return null;
+    
+    switch (selectedType.id) {
+      case 'url':
+        return 'Enter a complete URL starting with https://';
+      case 'multi-link':
+        return 'Enter your link tree or multi-link page URL';
+      case 'pdf':
+        return 'Enter a direct link to your PDF file';
+      case 'location':
+        return 'Enter an address (e.g., "123 Main St, City, State") or coordinates (e.g., "37.7749,-122.4194")';
+      default:
+        return null;
+    }
+  };
+
+  const renderContentInput = () => {
+    if (selectedType?.id === 'location') {
+      return (
+        <Textarea
+          value={config.content.replace('geo:0,0?q=', '').replace(/geo:.*?\?q=/, '')}
+          onChange={(e) => onContentChange(e.target.value)}
+          placeholder={getContentPlaceholder()}
+          className="min-h-[80px]"
+        />
+      );
+    }
+
+    return (
+      <Input
+        value={config.content}
+        onChange={(e) => onContentChange(e.target.value)}
+        placeholder={getContentPlaceholder()}
+      />
+    );
   };
 
   return (
@@ -52,33 +127,33 @@ export function QRConfigurationPanel({ config, onConfigChange, onContentChange }
           </TabsList>
           
           <TabsContent value="content" className="space-y-4">
-            <div>
-              <Label htmlFor="qr-type">QR Code Type</Label>
-              <Select value={config.type} onValueChange={(value: any) => setConfig(prev => ({ ...prev, type: value }))}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {qrTypes.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      <div className="flex items-center gap-2">
-                        <span>{type.icon}</span>
-                        <span>{type.label}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {!selectedType && (
+              <div>
+                <Label htmlFor="qr-type">QR Code Type</Label>
+                <Select value={config.type} onValueChange={(value: any) => setConfig(prev => ({ ...prev, type: value }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {qrTypes.map(type => (
+                      <SelectItem key={type.value} value={type.value}>
+                        <div className="flex items-center gap-2">
+                          <span>{type.icon}</span>
+                          <span>{type.label}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <div>
-              <Label htmlFor="content">Content</Label>
-              <Input
-                id="content"
-                value={config.content}
-                onChange={(e) => onContentChange(e.target.value)}
-                placeholder="Enter your content here..."
-              />
+              <Label htmlFor="content">{getContentLabel()}</Label>
+              {renderContentInput()}
+              {getHelpText() && (
+                <p className="text-xs text-gray-500 mt-1">{getHelpText()}</p>
+              )}
             </div>
           </TabsContent>
 

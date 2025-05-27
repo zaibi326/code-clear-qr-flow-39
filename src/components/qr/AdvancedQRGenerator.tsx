@@ -5,7 +5,20 @@ import { QRConfigurationPanel } from './QRConfigurationPanel';
 import { QRPreviewPanel } from './QRPreviewPanel';
 import { QRCodeDetails } from './QRCodeDetails';
 
-export function AdvancedQRGenerator() {
+interface SelectedType {
+  id: string;
+  title: string;
+  description: string;
+  qrType: 'url' | 'text' | 'email' | 'phone' | 'wifi' | 'vcard' | 'pdf' | 'location';
+  placeholder: string;
+  prefix?: string;
+}
+
+interface AdvancedQRGeneratorProps {
+  selectedType?: SelectedType;
+}
+
+export function AdvancedQRGenerator({ selectedType }: AdvancedQRGeneratorProps) {
   const {
     config,
     setConfig,
@@ -13,7 +26,7 @@ export function AdvancedQRGenerator() {
     isGenerating,
     canvasRef,
     handleContentChange
-  } = useQRGenerator();
+  } = useQRGenerator(selectedType);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -26,6 +39,7 @@ export function AdvancedQRGenerator() {
           config={config}
           onConfigChange={setConfig}
           onContentChange={handleContentChange}
+          selectedType={selectedType}
         />
       </div>
 
@@ -36,7 +50,7 @@ export function AdvancedQRGenerator() {
           generatedQR={generatedQR}
           isGenerating={isGenerating}
         />
-        <QRCodeDetails config={config} />
+        <QRCodeDetails config={config} selectedType={selectedType} />
       </div>
     </div>
   );
