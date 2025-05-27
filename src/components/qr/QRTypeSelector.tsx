@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   Link, 
   FileText, 
@@ -22,8 +23,10 @@ import {
   Phone, 
   MessageSquare,
   Sparkles,
-  Star
+  Star,
+  ArrowLeft
 } from 'lucide-react';
+import { AdvancedQRGenerator } from './AdvancedQRGenerator';
 
 interface QRType {
   id: string;
@@ -36,6 +39,8 @@ interface QRType {
 }
 
 export function QRTypeSelector() {
+  const [selectedType, setSelectedType] = useState<QRType | null>(null);
+
   const qrTypes: QRType[] = [
     // Frequently Used
     {
@@ -200,9 +205,39 @@ export function QRTypeSelector() {
 
   const handleTypeClick = (type: QRType) => {
     console.log('Selected QR type:', type.id);
-    // Navigate to QR generator with selected type
+    setSelectedType(type);
   };
 
+  const handleBackClick = () => {
+    setSelectedType(null);
+  };
+
+  // If a type is selected, show the QR generator
+  if (selectedType) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" onClick={handleBackClick} className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to QR Types
+          </Button>
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-lg ${selectedType.color} text-white`}>
+              <selectedType.icon className="h-5 w-5" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{selectedType.title}</h1>
+              <p className="text-gray-600">{selectedType.description}</p>
+            </div>
+          </div>
+        </div>
+        
+        <AdvancedQRGenerator />
+      </div>
+    );
+  }
+
+  // Default view showing all QR types
   return (
     <div className="space-y-8">
       <div>
