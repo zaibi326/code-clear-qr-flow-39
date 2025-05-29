@@ -113,7 +113,7 @@ export class QRCodeService {
         session: metadata.session,
       });
 
-      // Update QR code stats
+      // Update QR code stats using the RPC function
       await supabase.rpc('increment_qr_scan', { qr_id: qrCodeId });
     } catch (error) {
       console.error('Failed to track scan:', error);

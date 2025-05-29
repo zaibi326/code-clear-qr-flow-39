@@ -56,7 +56,7 @@ export class TemplateService {
         .from('templates')
         .insert({
           user_id: user.user.id,
-          name: templateData.name,
+          name: templateData.name || 'Untitled Template',
           description: templateData.description,
           file_url: publicUrl,
           preview_url: publicUrl,
@@ -75,7 +75,7 @@ export class TemplateService {
         return { success: false, error: error.message };
       }
 
-      return { success: true, template: data };
+      return { success: true, template: data as Template };
     } catch (error) {
       return { success: false, error: 'Failed to upload template' };
     }
@@ -97,7 +97,7 @@ export class TemplateService {
         return [];
       }
 
-      return data || [];
+      return (data || []) as Template[];
     } catch (error) {
       console.error('Failed to fetch templates:', error);
       return [];
@@ -117,7 +117,7 @@ export class TemplateService {
         return [];
       }
 
-      return data || [];
+      return (data || []) as Template[];
     } catch (error) {
       console.error('Failed to fetch public templates:', error);
       return [];

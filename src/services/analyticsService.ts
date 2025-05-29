@@ -100,7 +100,8 @@ export class AnalyticsService {
     const deviceMap = new Map<string, number>();
     
     scans.forEach(scan => {
-      const device = scan.device?.type || 'unknown';
+      const deviceInfo = scan.device as any;
+      const device = deviceInfo?.type || 'unknown';
       deviceMap.set(device, (deviceMap.get(device) || 0) + 1);
     });
 
@@ -118,7 +119,8 @@ export class AnalyticsService {
     const locationMap = new Map<string, number>();
     
     scans.forEach(scan => {
-      const country = scan.location?.country || 'Unknown';
+      const locationInfo = scan.location as any;
+      const country = locationInfo?.country || 'Unknown';
       locationMap.set(country, (locationMap.get(country) || 0) + 1);
     });
 
@@ -139,14 +141,17 @@ export class AnalyticsService {
         .from('qr_codes')
         .select('id, name, stats')
         .eq('user_id', userId)
-        .order('stats->total_scans', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(10);
 
-      return qrCodes?.map(qr => ({
-        id: qr.id,
-        name: qr.name || 'Unnamed QR Code',
-        scans: qr.stats?.total_scans || 0,
-      })) || [];
+      return qrCodes?.map(qr => {
+        const statsObj = qr.stats as any;
+        return {
+          id: qr.id,
+          name: qr.name || 'Unnamed QR Code',
+          scans: (statsObj && typeof statsObj === 'object' && statsObj.total_scans) ? Number(statsObj.total_scans) : 0,
+        };
+      }) || [];
     } catch (error) {
       console.error('Failed to fetch top QR codes:', error);
       return [];

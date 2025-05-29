@@ -185,12 +185,69 @@ export type Database = {
           },
         ]
       }
+      templates: {
+        Row: {
+          created_at: string
+          description: string | null
+          dimensions: Json
+          file_size: number
+          file_type: string
+          file_url: string
+          id: string
+          is_public: boolean
+          name: string
+          preview_url: string
+          qr_position: Json | null
+          tags: string[] | null
+          updated_at: string
+          usage_count: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          dimensions?: Json
+          file_size: number
+          file_type: string
+          file_url: string
+          id?: string
+          is_public?: boolean
+          name: string
+          preview_url: string
+          qr_position?: Json | null
+          tags?: string[] | null
+          updated_at?: string
+          usage_count?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          dimensions?: Json
+          file_size?: number
+          file_type?: string
+          file_url?: string
+          id?: string
+          is_public?: boolean
+          name?: string
+          preview_url?: string
+          qr_position?: Json | null
+          tags?: string[] | null
+          updated_at?: string
+          usage_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_qr_scan: {
+        Args: { qr_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
