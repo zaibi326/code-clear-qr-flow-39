@@ -34,9 +34,14 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
   const { toast } = useToast();
 
   useEffect(() => {
+    console.log('SupabaseAuthProvider: Setting up auth');
+    
     const checkAuth = async () => {
+      console.log('SupabaseAuthProvider: Checking auth status');
       const isAuth = await supabaseAuthService.checkAuthStatus();
       const currentAuthState = supabaseAuthService.getAuthState();
+      
+      console.log('SupabaseAuthProvider: Auth check result:', { isAuth, currentAuthState });
       
       setAuthState({
         ...currentAuthState,
@@ -48,14 +53,17 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
 
     // Set up auth state listener
     supabaseAuthService.onAuthStateChange((newState) => {
+      console.log('SupabaseAuthProvider: Auth state changed:', newState);
       setAuthState(newState);
     });
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    console.log('SupabaseAuthProvider: Login attempt for:', email);
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     const result = await supabaseAuthService.login({ email, password });
+    console.log('SupabaseAuthProvider: Login result:', result);
     
     if (result.success && result.user) {
       setAuthState(supabaseAuthService.getAuthState());
@@ -76,9 +84,11 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
   };
 
   const register = async (name: string, email: string, password: string, company?: string): Promise<boolean> => {
+    console.log('SupabaseAuthProvider: Register attempt for:', email);
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     const result = await supabaseAuthService.register({ name, email, password, company });
+    console.log('SupabaseAuthProvider: Register result:', result);
     
     if (result.success && result.user) {
       setAuthState(supabaseAuthService.getAuthState());
@@ -99,6 +109,7 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
   };
 
   const logout = async (): Promise<void> => {
+    console.log('SupabaseAuthProvider: Logout attempt');
     const currentUser = authState.user;
     await supabaseAuthService.logout();
     setAuthState({
@@ -114,6 +125,7 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
   };
 
   const updateProfile = async (updates: Partial<AuthUser>): Promise<boolean> => {
+    console.log('SupabaseAuthProvider: Update profile attempt');
     const result = await supabaseAuthService.updateProfile(updates);
     
     if (result.success && result.user) {
@@ -140,6 +152,8 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
     logout,
     updateProfile
   };
+
+  console.log('SupabaseAuthProvider: Rendering with state:', authState);
 
   return (
     <AuthContext.Provider value={value}>

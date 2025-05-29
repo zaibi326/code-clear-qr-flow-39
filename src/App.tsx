@@ -65,12 +65,12 @@ const App = () => (
                 <TemplateManager />
               </ProtectedRoute>
             } />
-            <Route path="/data" element={
+            <Route path="/data-manager" element={
               <ProtectedRoute>
                 <DataManager />
               </ProtectedRoute>
             } />
-            <Route path="/bulk-selector" element={
+            <Route path="/bulk-data-selector" element={
               <ProtectedRoute>
                 <BulkDataSelector />
               </ProtectedRoute>
