@@ -3,7 +3,7 @@ import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { DashboardTopbar } from '@/components/dashboard/DashboardTopbar';
-import { AdvancedQRGenerator } from '@/components/qr/AdvancedQRGenerator';
+import QRCodeGenerator from '@/components/qr/QRCodeGenerator';
 
 const QuickGenerate = () => {
   return (
@@ -19,7 +19,7 @@ const QuickGenerate = () => {
                 <p className="text-gray-600">Generate custom QR codes instantly with advanced styling options</p>
               </div>
               
-              <AdvancedQRGenerator />
+              <QRCodeGenerator />
             </main>
           </SidebarInset>
         </div>
