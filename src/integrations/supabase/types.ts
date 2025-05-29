@@ -9,7 +9,182 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          created_at: string | null
+          email: string
+          id: string
+          language: string | null
+          last_login_at: string | null
+          name: string
+          phone: string | null
+          plan: string | null
+          preferences: Json | null
+          subscription_status: string | null
+          timezone: string | null
+          trial_ends_at: string | null
+          updated_at: string | null
+          usage_stats: Json | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email: string
+          id: string
+          language?: string | null
+          last_login_at?: string | null
+          name: string
+          phone?: string | null
+          plan?: string | null
+          preferences?: Json | null
+          subscription_status?: string | null
+          timezone?: string | null
+          trial_ends_at?: string | null
+          updated_at?: string | null
+          usage_stats?: Json | null
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          language?: string | null
+          last_login_at?: string | null
+          name?: string
+          phone?: string | null
+          plan?: string | null
+          preferences?: Json | null
+          subscription_status?: string | null
+          timezone?: string | null
+          trial_ends_at?: string | null
+          updated_at?: string | null
+          usage_stats?: Json | null
+        }
+        Relationships: []
+      }
+      qr_codes: {
+        Row: {
+          content: string
+          content_type: string | null
+          created_at: string | null
+          custom_data: Json | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          name: string | null
+          password_hash: string | null
+          password_protected: boolean | null
+          qr_image_url: string | null
+          short_url: string | null
+          stats: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          content_type?: string | null
+          created_at?: string | null
+          custom_data?: Json | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          password_hash?: string | null
+          password_protected?: boolean | null
+          qr_image_url?: string | null
+          short_url?: string | null
+          stats?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          content_type?: string | null
+          created_at?: string | null
+          custom_data?: Json | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          password_hash?: string | null
+          password_protected?: boolean | null
+          qr_image_url?: string | null
+          short_url?: string | null
+          stats?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_codes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scan_events: {
+        Row: {
+          conversion: Json | null
+          device: Json
+          id: string
+          ip_address: unknown | null
+          location: Json | null
+          qr_code_id: string
+          referrer: string | null
+          session: Json
+          timestamp: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          conversion?: Json | null
+          device?: Json
+          id?: string
+          ip_address?: unknown | null
+          location?: Json | null
+          qr_code_id: string
+          referrer?: string | null
+          session?: Json
+          timestamp?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          conversion?: Json | null
+          device?: Json
+          id?: string
+          ip_address?: unknown | null
+          location?: Json | null
+          qr_code_id?: string
+          referrer?: string | null
+          session?: Json
+          timestamp?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_events_qr_code_id_fkey"
+            columns: ["qr_code_id"]
+            isOneToOne: false
+            referencedRelation: "qr_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scan_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
