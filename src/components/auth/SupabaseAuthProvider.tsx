@@ -1,7 +1,6 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabaseAuthService, AuthUser, AuthState } from '@/utils/supabaseAuthService';
-import { userProfileService } from '@/utils/userProfileService';
 import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType extends AuthState {
@@ -21,7 +20,11 @@ export const useAuth = () => {
   return context;
 };
 
-export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface SupabaseAuthProviderProps {
+  children: React.ReactNode;
+}
+
+export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
