@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/components/auth/SupabaseAuthProvider';
 import FormField from '@/components/auth/FormField';
 import PasswordInput from '@/components/auth/PasswordInput';
 
