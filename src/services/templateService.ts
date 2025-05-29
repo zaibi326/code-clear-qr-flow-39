@@ -75,7 +75,25 @@ export class TemplateService {
         return { success: false, error: error.message };
       }
 
-      return { success: true, template: data as Template };
+      // Convert database record to Template interface
+      const template: Template = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        file_url: data.file_url,
+        preview_url: data.preview_url,
+        file_type: data.file_type as any,
+        file_size: data.file_size,
+        dimensions: data.dimensions as any,
+        qr_position: data.qr_position as any,
+        tags: data.tags || [],
+        is_public: data.is_public,
+        usage_count: data.usage_count,
+        created_at: new Date(data.created_at),
+        updated_at: new Date(data.updated_at),
+      };
+
+      return { success: true, template };
     } catch (error) {
       return { success: false, error: 'Failed to upload template' };
     }
@@ -97,7 +115,23 @@ export class TemplateService {
         return [];
       }
 
-      return (data || []) as Template[];
+      // Convert database records to Template interface
+      return (data || []).map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        file_url: item.file_url,
+        preview_url: item.preview_url,
+        file_type: item.file_type as any,
+        file_size: item.file_size,
+        dimensions: item.dimensions as any,
+        qr_position: item.qr_position as any,
+        tags: item.tags || [],
+        is_public: item.is_public,
+        usage_count: item.usage_count,
+        created_at: new Date(item.created_at),
+        updated_at: new Date(item.updated_at),
+      }));
     } catch (error) {
       console.error('Failed to fetch templates:', error);
       return [];
@@ -117,7 +151,23 @@ export class TemplateService {
         return [];
       }
 
-      return (data || []) as Template[];
+      // Convert database records to Template interface
+      return (data || []).map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        file_url: item.file_url,
+        preview_url: item.preview_url,
+        file_type: item.file_type as any,
+        file_size: item.file_size,
+        dimensions: item.dimensions as any,
+        qr_position: item.qr_position as any,
+        tags: item.tags || [],
+        is_public: item.is_public,
+        usage_count: item.usage_count,
+        created_at: new Date(item.created_at),
+        updated_at: new Date(item.updated_at),
+      }));
     } catch (error) {
       console.error('Failed to fetch public templates:', error);
       return [];
