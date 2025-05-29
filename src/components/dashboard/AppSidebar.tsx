@@ -1,4 +1,3 @@
-
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LayoutDashboard, FileText, Zap, Database, BarChart3, Settings, HelpCircle, QrCode, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/components/auth/SupabaseAuthProvider';
 
 const menuItems = [
   {
